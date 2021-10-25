@@ -11,13 +11,22 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract YourCollectible is ERC721, Ownable {
 
+  // library that provides a counter with decrement, increment, reset functions only
   using Counters for Counters.Counter;
+
+  // what's the convention with _variableName? seems like for private or local variables only
+  // or rather for any variable that's not public/global
   Counters.Counter private _tokenIds;
 
   constructor() public ERC721("YourCollectible", "YCB") {
+  // Internal function in ERC721
+  // to set the base URI for all token IDs. 
+  // It is automatically added as a prefix to the value returned in tokenURI
+  // *** this saves gas versus adding for each NFT
     _setBaseURI("https://ipfs.io/ipfs/");
   }
 
+  // onlyOwner is a sol function modifier, only contract owner can call function
   function mintItem(address to, string memory tokenURI)
       public
       onlyOwner
